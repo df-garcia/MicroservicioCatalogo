@@ -1,13 +1,13 @@
-package com.microservices.catalogue;
+package com.mitocode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MicroservicioCatalogoApplication {
+public class DemoWebApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MicroservicioCatalogoApplication.class, args);
+		SpringApplication.run(DemoWebApplication.class, args);
 	}
 
 }
