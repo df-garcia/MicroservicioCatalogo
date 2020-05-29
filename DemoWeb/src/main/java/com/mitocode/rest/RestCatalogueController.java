@@ -25,9 +25,9 @@ public class RestCatalogueController
 {
 	@Autowired
 	private IProductoChiperRepo repo;
-	
+
 	private MessageBrokerPublisher messageBroker = new MessageBrokerPublisher(DemoWebApplication.publisher);
-	
+
 	@GetMapping
 	public List<ProductoChiper> listar(){
 		return repo.findAll();
@@ -36,8 +36,8 @@ public class RestCatalogueController
 	@PostMapping
 	public void insertar(@RequestBody ProductoChiper prod){
 		repo.save(prod);
-		messageBroker.textoEnviar = prod.getId() + "/" + prod.getNombre() + "/" + prod.getCategoria() + "/" +
-									prod.getDescripcion() + "/" + prod.getPrecio();
+		messageBroker.textoEnviar = "POST/" + prod.getId() + "/" + prod.getNombre() + "/" + prod.getCategoria() + "/" +
+				prod.getDescripcion() + "/" + prod.getPrecio();
 		try 
 		{
 			messageBroker.call();
@@ -47,15 +47,34 @@ public class RestCatalogueController
 			e.printStackTrace();
 		}
 	}
-	
+
 	@PutMapping
 	public void modificar(@RequestBody ProductoChiper prod){
 		repo.save(prod);
+		messageBroker.textoEnviar = "UPDATE/" +  prod.getId() + "/" + prod.getNombre() + "/" + prod.getCategoria() + "/" +
+				prod.getDescripcion() + "/" + prod.getPrecio();
+		try 
+		{
+			messageBroker.call();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public void eliminar(@PathVariable("id") String id) {
 		repo.deleteById(id);
+		messageBroker.textoEnviar = "DELETE/" + id;
+		try 
+		{
+			messageBroker.call();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
